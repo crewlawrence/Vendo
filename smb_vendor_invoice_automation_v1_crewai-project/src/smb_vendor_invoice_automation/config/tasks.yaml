@@ -1,0 +1,35 @@
+---
+monitor_and_extract_vendor_invoices:
+  description: "Search Gmail for vendor invoices received in the last {timeframe}
+    days (use 7 days if timeframe not specified). Use comprehensive search criteria
+    including keywords like:\n- \"invoice\", \"bill\", \"statement\", \"payment due\",
+    \"remittance\" \n- \"purchase order\", \"PO\", \"account payable\", \"billing\"\n-
+    Look in both subject lines and email body content\n\nFor each potential invoice
+    email:\n1. Retrieve full email details and any attachments\n2. Process PDF/image
+    attachments using OCR to extract text\n3. Extract structured invoice data:\n   -
+    Vendor name, address, and contact details\n   - Invoice number and reference numbers
+    \ \n   - Invoice date and due date\n   - Total amount and currency\n   - Line
+    items and descriptions\n   - Tax information (VAT, sales tax, etc.)\n   - Payment
+    terms and methods\n\nProvide detailed feedback about search results, including
+    emails processed and any issues encountered."
+  expected_output: 'Comprehensive summary including: total emails scanned, potential
+    invoices identified, successfully extracted invoice data with vendor names/amounts/dates,
+    and any processing errors. If no invoices found, explain search criteria used
+    and suggest broader search terms or longer timeframe.'
+  agent: vendor_invoice_processor
+organize_invoice_data_for_quickbooks:
+  description: "Organize extracted vendor invoice data into a QuickBooks-ready Google
+    Spreadsheet. Create a comprehensive spreadsheet with proper headers and include
+    a sample/template row for guidance.\n\nRequired columns:\n- Vendor Name, Invoice
+    Number, Invoice Date, Due Date, Amount, Currency\n- Description/Line Items, Expense
+    Category, Payment Terms, Tax Information  \n- Status (New/Pending/Processed),
+    Source Email ID, Data Quality Notes\n\nEven if no invoices were found, create
+    the structured template and add:\n1. A sample row showing the expected data format\n2.
+    Data validation notes and QuickBooks import guidelines\n3. Common expense category
+    suggestions for SMBs\n4. Instructions for manual entry and future use"
+  expected_output: A properly formatted Google Spreadsheet with column headers, sample
+    data row, validation guidelines, and QuickBooks import instructions. Include the
+    spreadsheet URL and summary of structure created.
+  agent: invoice_data_organizer
+  context:
+  - monitor_and_extract_vendor_invoices
